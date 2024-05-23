@@ -33,7 +33,31 @@ func GetMapCache(maxMemory int, maxEntrySize int, cleanupDuration time.Duration)
 			maxEntrySize: int64(maxEntrySize),
 		}
 
-		// TODO: Start a background goroutine to delete expired entries periodically
+		// Start a background goroutine to delete expired entries periodically
+		go mapCacheInstance.cleanupExpiredEntries(cleanupDuration)
 	})
 	return mapCacheInstance
+}
+
+// cleanupExpiredEntries periodically checks for and deletes expired entries
+func (c *MapCache) cleanupExpiredEntries(cleanupDuration time.Duration) {
+	for {
+		time.Sleep(cleanupDuration)
+
+		c.rwMutex.Lock()
+		for {
+			// if expiration
+			if c.expirationQ.isEmpty() || !c.expirationQ.isEarliestExpired() {
+				break
+			}
+
+			// Pop the expired entry from the expiration queue
+			// error is discarded because it is checked earlier that queue is not empty
+			entry, _ := c.expirationQ.popEntry()
+
+			// Remove the entry from the storage map
+			c.deleteEntry(entry)
+		}
+		c.rwMutex.Unlock()
+	}
 }
