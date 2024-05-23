@@ -19,23 +19,18 @@ type MapCache struct {
 // ensures MapCache implements the CacheService interface
 var _ CacheService = (*MapCache)(nil)
 
-// mapCacheInstance is the singleton instance of MapCache
-var mapCacheInstance *MapCache
-var once sync.Once
-
-// GetMapCache returns the singleton instance of MapCache
+// GetMapCache initializes and returns an instance of MapCache
 func GetMapCache(maxMemory int, maxEntrySize int, cleanupDuration time.Duration) *MapCache {
-	once.Do(func() {
-		mapCacheInstance = &MapCache{
-			storage:      make(map[string]*mapCacheEntry),
-			expirationQ:  newExpirationQueue(),
-			maxMemory:    int64(maxMemory),
-			maxEntrySize: int64(maxEntrySize),
-		}
+	mapCacheInstance := &MapCache{
+		storage:      make(map[string]*mapCacheEntry),
+		expirationQ:  newExpirationQueue(),
+		maxMemory:    int64(maxMemory),
+		maxEntrySize: int64(maxEntrySize),
+	}
 
-		// Start a background goroutine to delete expired entries periodically
-		go mapCacheInstance.cleanupExpiredEntries(cleanupDuration)
-	})
+	// Start a background goroutine to delete expired entries periodically
+	go mapCacheInstance.cleanupExpiredEntries(cleanupDuration)
+
 	return mapCacheInstance
 }
 
