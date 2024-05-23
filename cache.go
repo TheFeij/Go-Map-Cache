@@ -19,8 +19,8 @@ type MapCache struct {
 // ensures MapCache implements the CacheService interface
 var _ CacheService = (*MapCache)(nil)
 
-// GetMapCache initializes and returns an instance of MapCache
-func GetMapCache(maxMemory int, maxEntrySize int, cleanupDuration time.Duration) *MapCache {
+// NewMapCache initializes and returns an instance of MapCache
+func NewMapCache(maxMemory int, maxEntrySize int, cleanupDuration time.Duration) *MapCache {
 	mapCacheInstance := &MapCache{
 		storage:      make(map[string]*mapCacheEntry),
 		expirationQ:  newExpirationQueue(),
