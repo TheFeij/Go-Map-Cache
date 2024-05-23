@@ -1,4 +1,4 @@
-module go-map-cache
+module github.com/thefeij/go-map-cache
 
 go 1.22.2
 
