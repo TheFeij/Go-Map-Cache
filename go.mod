@@ -1,4 +1,4 @@
-module Go_Map_Cache
+module go-map-cache
 
 go 1.22.2
 
