@@ -53,3 +53,7 @@
 //   - Be mindful of the memory usage when setting the maximum memory limit and entry size limit,
 //     as exceeding these limits can lead to performance issues or out-of-memory errors.
 package mapcache
+
+// TODO: validation on user inputs
+// TODO: adding cli
+// TODO: docker image
