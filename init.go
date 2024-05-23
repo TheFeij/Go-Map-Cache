@@ -9,7 +9,7 @@
 //
 // # Usage
 //
-// To use the map_cache package, you can create instances of MapCache using the GetMapCache function,
+// To use the map_cache package, you can create instances of MapCache using the NewMapCache function,
 // passing in parameters such as the maximum memory limit, maximum entry size, and cleanup duration.
 // You can then use the CacheData method to store data in the cache and the LoadData method to retrieve data from the cache.
 //
